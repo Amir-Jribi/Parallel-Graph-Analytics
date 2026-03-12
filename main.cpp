@@ -2,6 +2,7 @@
 #include <graph.h>
 
 void bfsSerial(Graph &g, int start);
+void bfsParallel(Graph &g, int start);
 
 int main(){
   Graph g(5);
@@ -11,6 +12,7 @@ int main(){
   g.addEdge(4,5);
   std::cout << g.vertices << " " << g.edges << std::endl;
   bfsSerial(g, 1);
+  bfsParallel(g,1);
   std::cout << "hello world" << std::endl; 
   return 0;
 }
