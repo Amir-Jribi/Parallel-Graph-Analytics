@@ -3,11 +3,11 @@
 #include <queue> // for queue usage
 #include <iostream> // for cout and endl
 #include <cassert>  // for assert 
-void bfsSerial(Graph &g, int start)
+int bfsSerial(Graph &g, int start)
 {
   std::cout << "hello world for bfs serial function" << std::endl;
 //return;
-  std::vector<bool> visited(g.vertices+1,false);
+  std::vector<bool> visited(g.vertices,false);
   std::queue<int> q;
   q.push(start);
   visited[start] = 1;
@@ -25,5 +25,10 @@ void bfsSerial(Graph &g, int start)
       }
     }
   }
-  return;
+  int counter = 0;
+  for(int i=0;i<g.vertices;i++)
+  {
+     if (visited[i]) counter++;
+  }
+  return counter;
 }

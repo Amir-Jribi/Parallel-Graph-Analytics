@@ -7,31 +7,25 @@ int bfsParallel(Graph &g, int start)
   std::vector<bool> visited(g.vertices,false);
   std::vector<int> frontier;
   frontier.emplace_back(start);
-  visited[start] = true;
   while(!frontier.empty())
   {
       std::vector<int> next_frontier;
-     #pragma omp parallel default(none) shared(visited,frontier,g,next_frontier)
+     #pragma omp parallel
       {
           std::vector<int> local_next;
           #pragma omp for nowait
           for(int i=0;i<frontier.size();i++)
           {
-              int node = frontier[i]; 
-              for (int child:g.adjacency_list[node]) 
+              #pragma omp critical
               {
-                if (!visited[child]) // this can be read by multiple threads, would cause a problem ?, if multiple nodes have an edge with the child node !
-                {
-                    #pragma omp critical 
-                    {
-                        if (!visited[child])
-                         {
-                             visited[child] = true;
-                             local_next.emplace_back(child);
-                         }
-
-                    }
-                }
+                  if (!visited[frontier[i]])
+                  {
+                      visited[frontier[i]] = true;
+                      for(int j=0;j<size(g.adjacency_list[frontier[i]]);j++) 
+                      {
+                        local_next.emplace_back(g.adjacency_list[frontier[i]][j]);
+                      }
+                  }
               }
 
           }
