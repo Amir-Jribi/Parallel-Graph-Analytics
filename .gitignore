@@ -72,5 +72,6 @@ Testing/
 # remove dataset directory
 graphs/
 
-
+# remove intel vtune profiler generated dirs
+r00*
 

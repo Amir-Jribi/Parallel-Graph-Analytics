@@ -4,6 +4,7 @@
 #include <map>
 #include <fstream> // for std::ifstream
 #include <algorithm> // required for std::sort and std::unique
+#include <assert.h>
 Graph::Graph(int vertices): vertices(vertices), edges(0)
 {
   adjacency_list.resize(vertices); 
@@ -30,32 +31,17 @@ bool Graph::loadFromFile(const std::string& filename)
     // the file contains only edges its up to us to figure out vertices and edges
     // and try to have contiguous numbering ( from 0 to number of vertices - 1)
     adjacency_list.clear();
+    // size of adjecency_list of 5e6 is enough for now for the datasets that we are testing on!
+    // wanna scale more! maybe go to coordinate compression technique
+    adjacency_list.resize(5e6); 
+    vertices = 5e6;
     int u, v;
-    std::map<int,std::vector<int>> m;
-    std::vector<int> nodes;
-    std::map<int,int> comp;
     while(file >> u >> v)
     {
-        m[u].emplace_back(v);
-        nodes.emplace_back(u);
-        nodes.emplace_back(v);
+        assert(u<5e6 && v<5e6);
+        addEdge(u,v);
     }
-    sort(nodes.begin(),nodes.end());
-    nodes.resize(unique(nodes.begin(),nodes.end())-nodes.begin()); // remove duplicate numbers
-    adjacency_list.resize(nodes.size()); // resize to match the number of vertices
-    vertices = nodes.size();
-    
-    for(int i=0;i<size(nodes);i++)
-    {
-        comp[nodes[i]] = i;
-    }
-    for(auto [par,vec]:m)
-    {
-        for(auto ch:vec)
-        {
-           addEdge(comp[par],comp[ch]); 
-        }
-    }
+
     file.close();
     return true;
 }

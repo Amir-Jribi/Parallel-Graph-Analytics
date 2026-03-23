@@ -5,9 +5,9 @@
 #include <cassert>  // for assert 
 int bfsSerial(Graph &g, int start)
 {
-  std::cout << "hello world for bfs serial function" << std::endl;
+//  std::cout << "hello world for bfs serial function" << std::endl;
 //return;
-  std::vector<bool> visited(g.vertices,false);
+  std::vector<int> visited(g.vertices,0);
   std::queue<int> q;
   q.push(start);
   visited[start] = 1;
@@ -21,7 +21,7 @@ int bfsSerial(Graph &g, int start)
       if (!visited[ch])
       {
         q.push(ch);
-        visited[ch] = true;
+        visited[ch] = 1;
       }
     }
   }
