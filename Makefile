@@ -6,7 +6,6 @@ else
     UNAME_S := $(shell uname -s)
     ifeq ($(UNAME_S),Linux)
         include linux_gnu.def
-    endif
     else
         $(error Unsupported OS: $(UNAME_S))
     endif
