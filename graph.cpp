@@ -28,18 +28,28 @@ bool Graph::loadFromFile(const std::string& filename)
         std::cout << "The filename " << filename << "that was provided doesnt exist !" << std::endl;
         return false;
     }
-    // the file contains only edges its up to us to figure out vertices and edges
-    // and try to have contiguous numbering ( from 0 to number of vertices - 1)
-    adjacency_list.clear();
-    // size of adjecency_list of 5e6 is enough for now for the datasets that we are testing on!
-    // wanna scale more! maybe go to coordinate compression technique
-    adjacency_list.resize(5e6); 
-    vertices = 5e6;
+
+    std::vector<std::pair<int,int>> edges_list;
     int u, v;
+    Compressor compressor;
+    compressor.init();
     while(file >> u >> v)
     {
-        assert(u<5e6 && v<5e6);
-        addEdge(u,v);
+        edges_list.emplace_back(u, v);
+        compressor.add(u);
+        compressor.add(v);
+    }
+    compressor.run();
+    vertices = compressor.n;
+    adjacency_list.clear();
+    adjacency_list.resize(vertices);
+
+    for (auto& [u0, v0] : edges_list)
+    {
+        int cu = compressor.comp(u0);
+        int cv = compressor.comp(v0);
+        assert((cu < vertices) && (cv < vertices));
+        addEdge(cu, cv);
     }
 
     file.close();

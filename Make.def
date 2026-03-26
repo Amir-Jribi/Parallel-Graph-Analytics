@@ -1,0 +1,14 @@
+# for GNU compiler on windows
+# copy to make.def
+CC          = g++
+CLINKER     = $(CC)
+OPTFLAGS    = -std=c++17 -fopenmp -g
+LIBS        =
+PRE         =
+INCLUDES    = -I.
+
+CFLAGS	  = $(OPTFLAGS)
+
+OBJ=o
+EXE=.exe
+RM=del

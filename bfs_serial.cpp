@@ -3,7 +3,7 @@
 #include <queue> // for queue usage
 #include <iostream> // for cout and endl
 #include <cassert>  // for assert 
-int bfsSerial(Graph &g, int start)
+int bfsSerial(Graph &g, int start,std::vector<int>& distance)
 {
 //  std::cout << "hello world for bfs serial function" << std::endl;
 //return;
@@ -11,6 +11,7 @@ int bfsSerial(Graph &g, int start)
   std::queue<int> q;
   q.push(start);
   visited[start] = 1;
+  distance[start] = 0;
   while(!q.empty())
   {
     int u = q.front();
@@ -20,6 +21,7 @@ int bfsSerial(Graph &g, int start)
     {
       if (!visited[ch])
       {
+        distance[ch] = distance[u] + 1;
         q.push(ch);
         visited[ch] = 1;
       }
